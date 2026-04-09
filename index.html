@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Progress Report</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1b1a1f;
+    color: #e0e0e0;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .report {
+    width: 960px;
+    padding: 48px 56px;
+  }
+
+  .report-heading {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+
+  .report-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #999;
+    margin-bottom: 32px;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 0;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    flex: 1;
+    padding: 0 24px;
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .stat-card:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #999;
+    margin-bottom: 6px;
+  }
+
+  .stat-number {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .stat-change {
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .change-positive { color: #4ecf7b; }
+  .change-white { color: rgba(255,255,255,0.5); }
+
+  .color-total { color: #ffffff; }
+  .color-copyComplete { color: #E67E22; }
+  .color-designing { color: #F1C40F; }
+  .color-devReady { color: #3498DB; }
+  .color-inFlowout { color: #9B59B6; }
+  .color-qa { color: #4E9F7B; }
+  .color-notStarted { color: #808080; }
+
+  .chart-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .chart-container {
+    width: 360px;
+    height: 360px;
+  }
+
+  .legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 56px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #bbb;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-change {
+    font-weight: 600;
+    font-size: 12px;
+    margin-left: 2px;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px;
+  }
+
+  .footer-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #999;
+  }
+
+  .footer-value {
+    font-size: 48px;
+    font-weight: 700;
+    color: #808080;
+  }
+</style>
+</head>
+<body>
+<div class="report">
+  <div class="report-heading">Textedly Rebrand Status</div>
+  <div class="report-title">Weekly progress report — Thursday, April 9, 2026</div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total pages</div>
+      <div class="stat-number color-total">151</div>
+      <div class="stat-change change-positive">+2 from last week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Not started</div>
+      <div class="stat-number color-notStarted">57</div>
+      <div class="stat-change change-white">-25</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Dev Ready</div>
+      <div class="stat-number color-devReady">37</div>
+      <div class="stat-change change-positive">+37 new</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">In Flowout</div>
+      <div class="stat-number color-inFlowout">19</div>
+      <div class="stat-change change-positive">+19 new</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">QA</div>
+      <div class="stat-number color-qa">28</div>
+      <div class="stat-change change-positive">+9</div>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <div class="chart-container">
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <span class="legend-dot" style="background:#808080"></span>
+      Not started — 57 pages (38%)
+      <span class="legend-change" style="color:rgba(255,255,255,0.5)">-25</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background:#3498DB"></span>
+      Dev Ready — 37 pages (25%)
+      <span class="legend-change" style="color:#4ecf7b">+37</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background:#4E9F7B"></span>
+      QA — 28 pages (19%)
+      <span class="legend-change" style="color:#4ecf7b">+9</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background:#9B59B6"></span>
+      In Flowout — 19 pages (13%)
+      <span class="legend-change" style="color:#4ecf7b">+19</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background:#F1C40F"></span>
+      Designing — 5 pages (3%)
+      <span class="legend-change" style="color:rgba(255,255,255,0.5)">-43</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background:#E67E22"></span>
+      Copy Complete — 5 pages (3%)
+      <span class="legend-change" style="color:#4ecf7b">+5</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-label">Business days until June 30 deadline</div>
+    <div class="footer-value">59 days</div>
+  </div>
+</div>
+
+<script>
+const ctx = document.getElementById('pieChart').getContext('2d');
+new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: ['Not started', 'Dev Ready', 'QA', 'In Flowout', 'Designing', 'Copy Complete'],
+    datasets: [{
+      data: [57, 37, 28, 19, 5, 5],
+      backgroundColor: [
+        '#808080',
+        '#3498DB',
+        '#4E9F7B',
+        '#9B59B6',
+        '#F1C40F',
+        '#E67E22'
+      ],
+      borderWidth: 0,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#2a2930',
+        titleFont: { family: 'DM Sans', size: 14 },
+        bodyFont: { family: 'DM Sans', size: 13 },
+        padding: 12,
+        cornerRadius: 6,
+        callbacks: {
+          label: function(ctx) {
+            const pct = Math.round(ctx.parsed / 151 * 100);
+            return ` ${ctx.label}: ${ctx.parsed} pages (${pct}%)`;
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
